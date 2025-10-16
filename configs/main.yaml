@@ -28,7 +28,7 @@ paths:
 
 # Device
 device: cuda  # cuda | cpu | mps
-cuda_device_index: 0  # GPU index to use when device is cuda
+cuda_device_index: 1  # GPU index to use when device is cuda
 num_workers: 4
 pin_memory: true
 

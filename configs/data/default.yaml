@@ -13,7 +13,7 @@ datasets:
 
 # Dataset-specific configurations
 shanghaitech:
-  root: ${data.root}/shanghaitech
+  root: ${root}/shanghaitech
   train_split: training/frames
   test_split: testing/frames
   annotations: testing/test_frame_mask
@@ -22,7 +22,7 @@ shanghaitech:
   threshold: 1.6  # TAO threshold for ShanghaiTech
 
 ucsd_ped2:
-  root: ${data.root}/UCSD_Ped2
+  root: ${root}/UCSD_Ped2
   train_split: Train
   test_split: Test
   annotations: Test_annotations
@@ -31,7 +31,7 @@ ucsd_ped2:
   threshold: 1.5  # TAO threshold for UCSD
 
 avenue:
-  root: ${data.root}/Avenue
+  root: ${root}/Avenue
   train_split: training_videos
   test_split: testing_videos
   annotations: testing_label_mask
@@ -41,12 +41,12 @@ avenue:
 
 # Optional datasets
 streetscene:
-  root: ${data.root}/StreetScene
+  root: ${root}/StreetScene
   test_split: test
   annotations: annotations
 
 ubnormal:
-  root: ${data.root}/UBnormal
+  root: ${root}/UBnormal
   test_split: test
   annotations: annotations
 
