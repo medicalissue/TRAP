@@ -30,7 +30,6 @@ wheels/
 *.ipynb
 
 # Data
-data/
 datasets/
 features/
 *.mp4
