@@ -1,0 +1,72 @@
+# Data configuration
+name: default
+
+# Dataset paths
+root: ${paths.data_root}
+features_root: ${paths.features_root}
+
+# Datasets to use
+datasets:
+  - shanghaitech
+  - ucsd_ped2
+  - avenue
+
+# Dataset-specific configurations
+shanghaitech:
+  root: ${data.root}/shanghaitech
+  train_split: training/frames
+  test_split: testing/frames
+  annotations: testing/test_frame_mask
+  video_format: "*.avi"
+  frame_format: "*.jpg"
+  threshold: 1.6  # TAO threshold for ShanghaiTech
+
+ucsd_ped2:
+  root: ${data.root}/UCSD_Ped2
+  train_split: Train
+  test_split: Test
+  annotations: Test_annotations
+  video_format: "*.avi"
+  frame_format: "*.tif"
+  threshold: 1.5  # TAO threshold for UCSD
+
+avenue:
+  root: ${data.root}/Avenue
+  train_split: training_videos
+  test_split: testing_videos
+  annotations: testing_label_mask
+  video_format: "*.avi"
+  frame_format: "*.jpg"
+  threshold: 1.5
+
+# Optional datasets
+streetscene:
+  root: ${data.root}/StreetScene
+  test_split: test
+  annotations: annotations
+
+ubnormal:
+  root: ${data.root}/UBnormal
+  test_split: test
+  annotations: annotations
+
+# Data processing
+processing:
+  resize: [640, 640]  # [height, width] for YOLO input
+  normalize: true
+  fps: null  # null to use original fps
+
+# Feature extraction
+extraction:
+  batch_size: 1  # Process videos one at a time
+  save_shards: true
+  shard_size: 1000  # Number of sequences per shard
+  save_metadata: true
+  force_recompute: false
+
+# Track sequence parameters
+sequence:
+  T: ${model.temporal.seq_length}  # Sequence length
+  stride: ${model.temporal.seq_stride}  # Sliding window stride
+  min_track_length: ${sequence.T}  # Minimum frames to form a sequence
+  max_tracks_per_video: 1000

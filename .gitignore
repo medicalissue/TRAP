@@ -1,0 +1,75 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyTorch
+*.pt
+*.pth
+*.onnx
+
+# Jupyter
+.ipynb_checkpoints
+*.ipynb
+
+# Data
+data/
+datasets/
+features/
+*.mp4
+*.avi
+*.jpg
+*.png
+*.tif
+
+# Results
+results/
+checkpoints/
+logs/
+outputs/
+wandb/
+
+# Hydra
+.hydra/
+outputs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+venv/
+env/
+ENV/
+.venv
+
+# Temporary
+tmp/
+temp/
+*.tmp
+*.log

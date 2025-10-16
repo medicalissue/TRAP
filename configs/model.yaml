@@ -1,0 +1,50 @@
+# Model configuration
+name: default
+
+# YOLOv8 Configuration
+yolo:
+  weights: yolov8s.pt  # yolov8n.pt | yolov8s.pt | yolov8m.pt | yolov8l.pt | yolov8x.pt
+  freeze_backbone: true
+  tracker: bytetrack.yaml
+  conf_threshold: 0.25
+  iou_threshold: 0.45
+  max_det: 300
+  classes: null  # null for all classes, or list [0, 1, 2] for specific classes
+
+  # FPN feature extraction
+  fpn_layers: [17, 20, 23]  # P3, P4, P5 for YOLOv8
+  roi_size: 7  # RoIAlign output size
+
+# Feature Pooling Configuration
+pooling:
+  mode: hybrid  # gap | attn | hybrid
+  d_model: 256
+  attn_heads: 1
+  attn_dropout: 0.1
+
+# Temporal MAE Configuration
+temporal:
+  d_model: 256
+  depth: 6  # Number of transformer blocks
+  num_heads: 8
+  mlp_ratio: 4.0
+  dropout: 0.1
+  attn_dropout: 0.1
+  mask_ratio: 0.75  # Percentage of tokens to mask during training
+
+  # Sequence configuration
+  seq_length: 16  # T
+  seq_stride: 1   # Sliding window stride
+
+# Model heads
+heads:
+  use_mae: true
+  use_contrastive: true
+  use_forecasting: false
+  forecasting_steps: 4  # Number of future frames to predict
+
+# Contrastive learning
+contrastive:
+  temperature: 0.07
+  projection_dim: 128
+  use_projection_head: true

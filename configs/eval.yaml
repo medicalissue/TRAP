@@ -1,0 +1,114 @@
+# Evaluation configuration
+name: default
+
+# Evaluation mode
+mode: offline  # offline | online
+
+# Checkpoint to evaluate
+checkpoint: best  # best | last | path/to/checkpoint.pt
+
+# Anomaly scoring
+scoring:
+  alpha: 0.5  # Balance between reconstruction and temporal similarity
+  beta: 0.9   # EWMA smoothing factor
+  aggregation: max  # max | mean | weighted - frame-level aggregation from objects
+  normalize_scores: true
+
+# Thresholding
+threshold:
+  method: evt  # evt | fixed | percentile | adaptive
+  fixed_value: 1.5
+  percentile: 95
+  evt_tail_size: 0.1  # Extreme Value Theory tail size
+
+  # Dataset-specific thresholds (from TAO paper)
+  ucsd_ped2: 1.5
+  shanghaitech: 1.6
+  avenue: 1.5
+
+# Tracking parameters (for evaluation)
+tracking:
+  enabled: true
+  window_k: 5  # Tracking window size
+  frame_match_m: 3  # Minimum frames for match
+  iou_threshold_h: 0.2  # IoU threshold for merging
+
+# Object-level evaluation
+object:
+  min_box_area: 100  # Minimum bounding box area
+  merge_overlapping: true
+  merge_iou_threshold: 0.2
+  use_sam2_segmentation: false  # Use SAM2 for mask generation
+  sam2_checkpoint: null
+
+# Metrics to compute
+metrics:
+  # Pixel-level
+  - pixel_auroc
+  - pixel_ap
+  - pixel_aupro
+  - pixel_f1
+
+  # Object-level (TAO)
+  - rbdc  # Region-Based Detection Criterion
+  - tbdc  # Track-Based Detection Criterion
+
+  # Frame-level
+  - frame_auc
+  - frame_prauc
+
+  # Performance
+  - latency
+  - fps
+
+# Baseline comparison (TAO paper Table 2 numbers)
+baselines:
+  ucsd_ped2:
+    OCAD: {frame_auc: 96.2, pixel_auc: 97.8}
+    "BAF-AT": {frame_auc: 96.5, pixel_auc: 98.1}
+    "AED-SSMTL": {frame_auc: 97.2, pixel_auc: 98.5}
+    HF2VAD: {frame_auc: 99.3, pixel_auc: 99.1}
+    STPT: {frame_auc: 96.9, pixel_auc: 98.4}
+
+  shanghaitech:
+    OCAD: {frame_auc: 84.8, pixel_auc: 89.2}
+    "BAF-AT": {frame_auc: 92.3, pixel_auc: 93.7}
+    "AED-SSMTL": {frame_auc: 97.4, pixel_auc: 97.8}
+    HF2VAD: {frame_auc: 91.1, pixel_auc: 93.5}
+    STPT: {frame_auc: 96.5, pixel_auc: 97.2}
+
+  avenue:
+    OCAD: {frame_auc: 88.1, pixel_auc: 85.6}
+    "BAF-AT": {frame_auc: 90.4, pixel_auc: 91.1}
+    "AED-SSMTL": {frame_auc: 93.5, pixel_auc: 94.2}
+
+# Ablation studies
+ablation:
+  enabled: false
+  studies:
+    - name: pooling_modes
+      params: {model.pooling.mode: [gap, attn, hybrid]}
+    - name: tracking_modes
+      params: {eval.tracking.enabled: [true, false]}
+    - name: alpha_sensitivity
+      params: {eval.scoring.alpha: [0.0, 0.3, 0.5, 0.7, 1.0]}
+
+# Cross-dataset generalization
+cross_dataset:
+  enabled: false
+  train_on: shanghaitech
+  test_on: [ucsd_ped2, avenue]
+
+# Output
+output:
+  save_predictions: true
+  save_visualizations: true
+  save_per_frame_csv: true
+  save_per_object_csv: true
+  save_html_report: true
+
+  # Directories
+  pred_dir: ${paths.results}/predictions
+  vis_dir: ${paths.results}/visualizations
+  csv_dir: ${paths.results}/csv
+  report_dir: ${paths.results}/reports

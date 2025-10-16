@@ -1,0 +1,40 @@
+defaults:
+  - model: default
+  - data: default
+  - train: default
+  - eval: default
+  - _self_
+
+# Weights & Biases
+wandb:
+  project: temporal_mae_ood
+  entity: null  # Set to your wandb username/team
+  name: null  # Auto-generated if null
+  mode: online  # online | offline | disabled
+  tags: []
+  notes: ""
+
+# Random seed
+seed: 42
+
+# Paths
+paths:
+  root: ${oc.env:PWD}
+  data_root: ${paths.root}/data
+  features_root: ${paths.root}/features
+  checkpoints: ${paths.root}/checkpoints
+  results: ${paths.root}/results
+  logs: ${paths.root}/logs
+
+# Device
+device: cuda  # cuda | cpu | mps
+num_workers: 4
+pin_memory: true
+
+# Hydra configuration
+hydra:
+  run:
+    dir: ${paths.logs}/${now:%Y-%m-%d}/${now:%H-%M-%S}
+  sweep:
+    dir: ${paths.logs}/multirun/${now:%Y-%m-%d}/${now:%H-%M-%S}
+    subdir: ${hydra.job.num}
