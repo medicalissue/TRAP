@@ -28,6 +28,7 @@ from models.pooling import build_pooling
 from models.losses import compute_anomaly_score
 from data.trackseq_dataset import RingBufferSequencer
 from utils.seed import set_seed
+from utils.device import resolve_device
 
 
 class OnlineInference:
@@ -35,7 +36,7 @@ class OnlineInference:
 
     def __init__(self, cfg: DictConfig):
         self.cfg = cfg
-        self.device = cfg.device if torch.cuda.is_available() else 'cpu'
+        self.device = resolve_device(cfg)
 
         # Set seed
         set_seed(cfg.seed)

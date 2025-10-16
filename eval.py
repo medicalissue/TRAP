@@ -21,6 +21,7 @@ from utils.metrics import evaluate_all_metrics
 from utils.evt import select_threshold
 from utils.logging import WandbLogger, create_summary_table
 from utils.seed import set_seed
+from utils.device import resolve_device
 
 
 class Evaluator:
@@ -28,7 +29,7 @@ class Evaluator:
 
     def __init__(self, cfg: DictConfig):
         self.cfg = cfg
-        self.device = cfg.device if torch.cuda.is_available() else 'cpu'
+        self.device = resolve_device(cfg)
 
         # Set seed
         set_seed(cfg.seed)

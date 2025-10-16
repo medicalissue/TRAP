@@ -29,12 +29,13 @@ except ImportError:
     sys.exit(1)
 
 from models.pooling import build_pooling
+from utils.device import resolve_device
 
 
 class FeatureExtractor:
     """Extract object-level features from videos using YOLO+ByteTrack."""
 
-    def __init__(self, cfg: DictConfig, device: str = 'cuda'):
+    def __init__(self, cfg: DictConfig, device: torch.device):
         self.cfg = cfg
         self.device = device
 
@@ -319,7 +320,7 @@ def main(cfg: DictConfig):
     print("=" * 80)
 
     # Setup device
-    device = cfg.device if torch.cuda.is_available() else 'cpu'
+    device = resolve_device(cfg)
     print(f"Device: {device}")
 
     # Create output directory

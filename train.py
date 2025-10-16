@@ -19,6 +19,7 @@ from models.temporal_mae import TemporalMAE
 from models.losses import CombinedLoss
 from data.trackseq_dataset import create_dataloader
 from utils.seed import set_seed, worker_init_fn
+from utils.device import resolve_device
 from utils.logging import WandbLogger, plot_loss_curves, plot_reconstruction
 
 
@@ -27,7 +28,7 @@ class Trainer:
 
     def __init__(self, cfg: DictConfig):
         self.cfg = cfg
-        self.device = cfg.device if torch.cuda.is_available() else 'cpu'
+        self.device = resolve_device(cfg)
 
         # Set random seed
         set_seed(cfg.seed)
